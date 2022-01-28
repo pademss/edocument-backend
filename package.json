@@ -1,20 +1,22 @@
 {
-  "name": "node-mysql-starter",
+  "name": "y",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {},
   "scripts": {
-    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pademss/backend-elibrary.git"
+  },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1"
+  "bugs": {
+    "url": "https://github.com/pademss/backend-elibrary/issues"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+  "homepage": "https://github.com/pademss/backend-elibrary#readme"
 }
