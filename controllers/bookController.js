@@ -6,7 +6,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 exports.getAllBooks = async (req, res) => {
-        const query = "select *, concat('B',id) as idBuku from tesDataBuku";
+        const query = "select *, concat('B',id) as idBuku from dataBuku";
         pool.query(query, function (err, result) {
         if (err) {
                 res.send("error");
@@ -18,7 +18,7 @@ exports.getAllBooks = async (req, res) => {
 };
 
 exports.addBook = async (req, res) => {
-        const query = `INSERT INTO tesDataBuku(judul, pengarang, penerbit, tahun) values ('${req.body.judul}', '${req.body.pengarang}', '${req.body.penerbit}', '${req.body.tahun}')`;
+        const query = `INSERT INTO dataBuku(judul, pengarang, penerbit, tahun) values ('${req.body.judul}', '${req.body.pengarang}', '${req.body.penerbit}', '${req.body.tahun}')`;
         pool.query(query, function (err, result) {
         if (err) {
                 res.send("error");
@@ -30,7 +30,7 @@ exports.addBook = async (req, res) => {
 };
 
 exports.updateBook = async (req, res) => {
-        const query = `UPDATE tesDataBuku SET judul = '${req.body.judul}', pengarang = '${req.body.pengarang}', penerbit = '${req.body.penerbit}', tahun = '${req.body.tahun}' WHERE id = ${req.params.id}`;
+        const query = `UPDATE dataBuku SET judul = '${req.body.judul}', pengarang = '${req.body.pengarang}', penerbit = '${req.body.penerbit}', tahun = '${req.body.tahun}' WHERE id = ${req.params.id}`;
         pool.query(query, function (err, result) {
         if (err) {
                 res.send("error");
@@ -42,7 +42,7 @@ exports.updateBook = async (req, res) => {
 };
 
 exports.deleteBook = async (req, res) => {
-        const query = `DELETE FROM tesDataBuku WHERE id = '${req.params.id}'`;
+        const query = `DELETE FROM dataBuku WHERE id = '${req.params.id}'`;
         pool.query(query, function (err, result) {
         if (err) {
                 res.send("error");
