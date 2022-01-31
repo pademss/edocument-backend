@@ -6,7 +6,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 exports.getAllBooks = async (req, res) => {
-  const query = "select *, concat('B',id) as idBuku from dataBuku";
+  const query =
+    "select *, concat('B',id) as idBuku from dataBuku order by id asc";
   pool.query(query, function (err, result) {
     if (err) {
       res.send("error");
