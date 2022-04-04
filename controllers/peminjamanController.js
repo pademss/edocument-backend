@@ -5,8 +5,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-exports.addUser = async (req, res) => {
-  const query = `INSERT INTO pengguna(nama, username, level, unit_kerja, jenis_kelamin, nomor_ktp, password) values ('${req.body.nama}', '${req.body.username}', '${req.body.level}', '${req.body.unit_kerja}', '${req.body.jenis_kelamin}', '${req.body.nomor_ktp}', '${req.body.password}')`;
+exports.addPeminjaman = async (req, res) => {
+  const query = `INSERT INTO peminjaman(id_dokumen, id_peminjam, konfirmasi) values ('${req.body.id_dokumen}', '${req.body.id_peminjam}', 'menunggu')`;
   console.log(req.body);
   pool.query(query, function (err, result) {
     if (err) {
@@ -19,7 +19,8 @@ exports.addUser = async (req, res) => {
 };
 
 exports.getAllUser = async (req, res) => {
-  const query = "select * from pengguna";
+  const query =
+    "select * from peminjaman inner join dokumen ON dokumen.id_dokumen = peminjaman.id_dokumen";
   pool.query(query, function (err, result) {
     if (err) {
       res.send("error");
