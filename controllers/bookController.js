@@ -56,7 +56,7 @@ exports.deleteBook = async (req, res) => {
 };
 
 exports.getBookById = async (req, res) => {
-  const query = `select * from databuku where id = '${req.params.id}`;
+  const query = `select * from databuku where id = '${req.params.id}'`;
   pool.query(query, function (err, result) {
     if (err) {
       res.send("error");
