@@ -54,3 +54,15 @@ exports.deleteBook = async (req, res) => {
     res.send("berhasil");
   });
 };
+
+exports.getBookById = async (req, res) => {
+  const query = `select * from databuku where id = '${req.params.id}`;
+  pool.query(query, function (err, result) {
+    if (err) {
+      res.send("error");
+      throw err;
+    }
+    console.log(result.rows);
+    res.send(result.rows);
+  });
+};

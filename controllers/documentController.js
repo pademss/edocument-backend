@@ -29,3 +29,15 @@ exports.getAllDocument = async (req, res) => {
     res.send(result.rows);
   });
 };
+
+exports.getDocumentById = async (req, res) => {
+  const query = `select * from dokumen where id = '${req.params.id_dokumen}`;
+  pool.query(query, function (err, result) {
+    if (err) {
+      res.send("error");
+      throw err;
+    }
+    console.log(result.rows);
+    res.send(result.rows);
+  });
+};

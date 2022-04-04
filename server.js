@@ -18,6 +18,7 @@ app.use(express.json()); // parse json bodies in the request object
 app.use("/buku", require("./routes/bookRoutes"));
 app.use("/pengguna", require("./routes/userRoutes"));
 app.use("/dokumen", require("./routes/documentRoutes"));
+app.use("/peminjaman", require("./routes/peminjamanRoutes"));
 
 // app.use(function (req, res, next) {
 //   //set headers to allow cross origin requestt

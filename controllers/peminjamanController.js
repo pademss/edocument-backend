@@ -18,7 +18,7 @@ exports.addPeminjaman = async (req, res) => {
   });
 };
 
-exports.getAllUser = async (req, res) => {
+exports.getAllPeminjaman = async (req, res) => {
   const query =
     "select * from peminjaman inner join dokumen ON dokumen.id_dokumen = peminjaman.id_dokumen";
   pool.query(query, function (err, result) {
@@ -28,5 +28,17 @@ exports.getAllUser = async (req, res) => {
     }
     console.log(result.rows);
     res.send(result.rows);
+  });
+};
+
+exports.updateKonfirmasiPeminjaman = async (req, res) => {
+  const query = `UPDATE peminjaman SET konfirmasi = '${req.body.konfirmasi}' WHERE id_peminjaman = ${req.params.id_peminjaman}`;
+  pool.query(query, function (err, result) {
+    if (err) {
+      res.send("error");
+      throw err;
+    }
+    console.log("berhasil");
+    res.send("berhasil");
   });
 };
