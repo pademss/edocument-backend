@@ -2,20 +2,22 @@ require("dotenv").config(); // ALLOWS ENVIRONMENT VARIABLES TO BE SET ON PROCESS
 
 const express = require("express");
 const app = express();
-const cors = require("cors");
+// const cors = require("cors");
 
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "*",
+//     credentials: true,
+//   })
+// );
 
 // Middleware
 app.use(express.json()); // parse json bodies in the request object
 
 // Redirect requests to endpoint starting with /posts to postRoutes.js
 app.use("/buku", require("./routes/bookRoutes"));
+app.use("/pengguna", require("./routes/userRoutes"));
+app.use("/dokumen", require("./routes/documentRoutes"));
 
 // app.use(function (req, res, next) {
 //   //set headers to allow cross origin requestt
