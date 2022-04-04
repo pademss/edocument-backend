@@ -4,8 +4,11 @@ const { pool } = require("../config/db");
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+var jwt = require("jsonwebtoken");
 
 exports.getAllBooks = async (req, res) => {
+  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  console.log(decoded);
   const query =
     "select *, concat('B',id) as idBuku from dataBuku order by id asc";
   pool.query(query, function (err, result) {

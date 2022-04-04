@@ -19,6 +19,7 @@ app.use("/buku", require("./routes/bookRoutes"));
 app.use("/pengguna", require("./routes/userRoutes"));
 app.use("/dokumen", require("./routes/documentRoutes"));
 app.use("/peminjaman", require("./routes/peminjamanRoutes"));
+app.use("/login", require("./routes/loginRoutes"));
 
 // app.use(function (req, res, next) {
 //   //set headers to allow cross origin requestt

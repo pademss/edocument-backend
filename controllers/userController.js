@@ -7,6 +7,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const salt = 4648;
+var jwt = require("jsonwebtoken");
 
 exports.addUser = async (req, res) => {
   bcrypt.genSalt(saltRounds, function (err, salt) {
@@ -28,13 +29,19 @@ exports.addUser = async (req, res) => {
 };
 
 exports.getAllUser = async (req, res) => {
-  const query = "select * from pengguna";
-  pool.query(query, function (err, result) {
-    if (err) {
-      res.send("error");
-      throw err;
-    }
-    console.log(result.rows);
-    res.send(result.rows);
-  });
+  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  console.log(decoded);
+  if (decoded.level === "admin") {
+    const query = "select * from pengguna";
+    pool.query(query, function (err, result) {
+      if (err) {
+        res.send("error");
+        throw err;
+      }
+      console.log(result.rows);
+      res.send(result.rows);
+    });
+  } else {
+    res.send("kamu bukan admin");
+  }
 };
