@@ -43,6 +43,7 @@ exports.getLogin = async (req, res) => {
           const token = jwt.sign(
             JSON.stringify(result.rows[0]),
             "padempindikajonathan"
+            // { expiresIn: "3M" }
           );
           console.log("sukses");
           res.status(200).send({ pengguna: result.rows[0], token: token });
