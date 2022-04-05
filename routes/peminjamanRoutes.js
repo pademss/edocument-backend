@@ -11,6 +11,8 @@ router.route("/:id_peminjaman").put(controller.updateKonfirmasiPeminjaman);
 
 router.route("/:id_peminjam").get(controller.getPeminjamanById);
 
+router.route("/konfirmasi/:id_pic").get(controller.getKonfirmasiPeminjamanById);
+
 // router.route("/:id").delete(controller.deleteBook).put(controller.updateBook);
 
 module.exports = router;

@@ -81,3 +81,21 @@ exports.updateKonfirmasiPeminjaman = async (req, res) => {
     res.send("berhasil");
   });
 };
+
+exports.getKonfirmasiPeminjamanById = async (req, res) => {
+  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  console.log(decoded);
+  if (decoded.level === "supervisor") {
+    const query = `select * from peminjaman where id_pic = '${req.params.id_pic}'`;
+    pool.query(query, function (err, result) {
+      if (err) {
+        res.send("error");
+        throw err;
+      }
+      console.log(result.rows);
+      res.send(result.rows);
+    });
+  } else {
+    res.send("role kamu tidak dapat melakukan ini");
+  }
+};

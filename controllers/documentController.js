@@ -5,21 +5,124 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 var jwt = require("jsonwebtoken");
+const AWS = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+// const KEY_ID = "AKIAROTUI7GT5GP22GPI";
+// const SECRET_KEY = "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";
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
+
+// const upload = multer({
+//   storage: multerS3({
+//     bucket: "edocument-develop",
+//     s3: s3,
+//     acl: "public-read",
+//     key: (req, file, cb) => {
+//       cv(null, file.originalname);
+//     },
+//   }),
+// });
+
+// app.post("/upload", upload.single("file"), (req, res) => {
+//   console.log(req.file);
+//   res.send("sukses upload");
+// });
+
+const upload = multer({
+  storage: multerS3({
+    bucket: process.env.AWS_BUCKET_NAME,
+    s3: s3,
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+    acl: "public-read",
+    contentDisposition: "inline",
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+  }),
+});
+
+exports.uploadDocument = async (req, res) => {
+  const uploadSingle = upload.single("file");
+
+  uploadSingle(req, res, (err) => {
+    if (err) {
+      res.send("error");
+      throw err;
+    }
+    console.log(req.file);
+    res.send("sukses upload");
+  });
+
+  // console.log(req.file);
+  // res.send("sukses upload");
+};
+// app.get("/list")
+
+// const uploadFile = (filename) => {
+//   const fileContent = fs.readFileSync(filename);
+
+//   const params = {
+//     Bucket: "edocument-develop",
+//     Key: ''
+//   }
+// }
 
 exports.addDocument = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  console.log(req.headers.authorization.substring(7));
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
   if (decoded.level === "admin") {
-    const query = `INSERT INTO dokumen(judul_dokumen, pic) values ('${req.body.judul_dokumen}', '${req.body.pic}')`;
-    console.log(req.body);
-    pool.query(query, function (err, result) {
+    const uploadSingle = upload.single("file");
+
+    uploadSingle(req, res, (err) => {
       if (err) {
         res.send("error");
         throw err;
+      } else {
+        // console.log(req.file);
+        // console.log(
+        //   "url:" +
+        //     req.file.location +
+        //     " nama file: " +
+        //     req.file.originalname +
+        //     " pic: " +
+        //     req.body.pic
+        // );
+        // res.send("sukses upload");
+        const query = `INSERT INTO dokumen(judul_dokumen, id_pic, file_dokumen, kategori_dokumen) values ('${req.file.originalname}', '${req.body.id_pic}', '${req.file.location}', '${req.body.kategori_dokumen}')`;
+        console.log(req.body.pic);
+        pool.query(query, function (err, result) {
+          if (err) {
+            res.send("error");
+            throw err;
+          }
+          console.log("berhasil");
+          res.send("berhasil");
+        });
       }
-      console.log("berhasil");
-      res.send("berhasil");
     });
+
+    // res.send("sukses upload");
+    // const query = `INSERT INTO dokumen(judul_dokumen, pic, file_dokumen) values ('${req.file.originalname}', '${req.body.pic}', '${req.file.location}')`;
+    // console.log(req.body);
+    // pool.query(query, function (err, result) {
+    //   if (err) {
+    //     res.send("error");
+    //     throw err;
+    //   }
+    //   console.log("berhasil");
+    //   res.send("berhasil");
+    // });
   } else {
     res.send("kamu bukan admin");
   }
