@@ -163,7 +163,7 @@ exports.getDocumentById = async (req, res) => {
     decoded.level === "anggota" ||
     decoded.level === "supervisor"
   ) {
-    const query = `select * from dokumen where id = '${req.params.id_dokumen}`;
+    const query = `select * from dokumen where id = '${req.params.id_dokumen}'`;
     pool.query(query, function (err, result) {
       if (err) {
         res.send("error");

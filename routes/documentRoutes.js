@@ -3,7 +3,7 @@ const controller = require("../controllers/documentController");
 
 router.route("/").get(controller.getAllDocument).post(controller.addDocument);
 router.route("/upload").post(controller.uploadDocument);
-// router.route("/:id").get(controller.getDocumentById);
+router.route("/:id").get(controller.getDocumentById);
 
 // router.route("/:id").delete(controller.deleteBook).put(controller.updateBook);
 
