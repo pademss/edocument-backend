@@ -7,18 +7,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var jwt = require("jsonwebtoken");
 
 exports.getAllBooks = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
-  const query =
-    "select *, concat('B',id) as idBuku from dataBuku order by id asc";
-  pool.query(query, function (err, result) {
-    if (err) {
-      res.send("error");
-      throw err;
-    }
-    console.log(result.rows);
-    res.send(result.rows);
-  });
+  if (
+    decoded.level === "admin" ||
+    decoded.level === "anggota" ||
+    decoded.level === "supervisor"
+  ) {
+    const query =
+      "select *, concat('B',id) as idBuku from dataBuku order by id asc";
+    pool.query(query, function (err, result) {
+      if (err) {
+        res.send("error");
+        throw err;
+      }
+      console.log(result.rows);
+      res.send(result.rows);
+    });
+  } else {
+    console.log("kamu belum punya akun");
+  }
 };
 
 exports.addBook = async (req, res) => {
