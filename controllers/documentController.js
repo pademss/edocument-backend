@@ -100,7 +100,6 @@ exports.addDocument = async (req, res) => {
         // );
         // res.send("sukses upload");
         const query = `INSERT INTO dokumen(judul_dokumen, id_pic, file_dokumen, kategori_dokumen) values ('${req.file.originalname}', '${req.body.id_pic}', '${req.file.location}', '${req.body.kategori_dokumen}')`;
-        console.log(req.body.pic);
         pool.query(query, function (err, result) {
           if (err) {
             res.send("error");
@@ -129,7 +128,10 @@ exports.addDocument = async (req, res) => {
 };
 
 exports.getAllDocument = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
   if (
     decoded.level === "admin" ||
@@ -151,7 +153,10 @@ exports.getAllDocument = async (req, res) => {
 };
 
 exports.getDocumentById = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
   if (
     decoded.level === "admin" ||

@@ -29,7 +29,10 @@ exports.addUser = async (req, res) => {
 };
 
 exports.getAllUser = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
   if (decoded.level === "admin") {
     const query = "select * from pengguna";

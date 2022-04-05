@@ -7,7 +7,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var jwt = require("jsonwebtoken");
 
 exports.addPeminjaman = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
   if (
     decoded.level === "admin" ||
@@ -30,7 +33,10 @@ exports.addPeminjaman = async (req, res) => {
 };
 
 exports.getAllPeminjaman = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
   if (decoded.level === "admin") {
     const query =
@@ -49,7 +55,10 @@ exports.getAllPeminjaman = async (req, res) => {
 };
 
 exports.getPeminjamanById = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
   if (
     decoded.level === "admin" ||
@@ -83,7 +92,10 @@ exports.updateKonfirmasiPeminjaman = async (req, res) => {
 };
 
 exports.getKonfirmasiPeminjamanById = async (req, res) => {
-  var decoded = jwt.verify(req.body.token, "padempindikajonathan");
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
   console.log(decoded);
   if (decoded.level === "supervisor") {
     const query = `select * from peminjaman where id_pic = '${req.params.id_pic}'`;
