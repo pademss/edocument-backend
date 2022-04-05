@@ -46,7 +46,7 @@ exports.getLogin = async (req, res) => {
             // { expiresIn: "3M" }
           );
           console.log("sukses");
-          res.status(200).send({ pengguna: result.rows[0], token: token });
+          res.status(200).send({ token: token });
         }
       }
     );
