@@ -40,7 +40,7 @@ exports.getAllPeminjaman = async (req, res) => {
   console.log(decoded);
   if (decoded.level === "admin") {
     const query =
-      "select * from peminjaman inner join dokumen ON dokumen.id_dokumen = peminjaman.id_dokumen";
+      "select peminjaman.id_peminjaman, dokumen.judul_dokumen, dokumen.file_dokumen, pengguna.nama, peminjaman.tanggal_peminjaman, peminjaman.konfirmasi from peminjaman inner join dokumen ON dokumen.id_dokumen = peminjaman.id_dokumen inner join pengguna ON pengguna.id_user = peminjaman.id_peminjam";
     pool.query(query, function (err, result) {
       if (err) {
         res.send("error");
@@ -109,5 +109,30 @@ exports.getKonfirmasiPeminjamanById = async (req, res) => {
     });
   } else {
     res.send("role kamu tidak dapat melakukan ini");
+  }
+};
+
+exports.getDetailPeminjamanByIdPeminjaman = async (req, res) => {
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
+  console.log(decoded);
+  if (
+    decoded.level === "admin" ||
+    decoded.level === "anggota" ||
+    decoded.level === "supervisor"
+  ) {
+    const query = `select peminjaman.id_peminjaman, dokumen.judul_dokumen, dokumen.file_dokumen, pengguna.nama, peminjaman.tanggal_peminjaman, peminjaman.konfirmasi from peminjaman inner join dokumen ON dokumen.id_dokumen = peminjaman.id_dokumen inner join pengguna ON pengguna.id_user = peminjaman.id_peminjam where id_peminjaman = '${req.params.id_peminjaman}'`;
+    pool.query(query, function (err, result) {
+      if (err) {
+        res.send("error");
+        throw err;
+      }
+      console.log(result.rows);
+      res.send(result.rows);
+    });
+  } else {
+    res.send("kamu belum memiliki akun");
   }
 };

@@ -13,6 +13,10 @@ router.route("/:id_peminjam").get(controller.getPeminjamanById);
 
 router.route("/konfirmasi/:id_pic").get(controller.getKonfirmasiPeminjamanById);
 
+router
+  .route("/detail/:id_peminjaman")
+  .get(controller.getDetailPeminjamanByIdPeminjaman);
+
 // router.route("/:id").delete(controller.deleteBook).put(controller.updateBook);
 
 module.exports = router;

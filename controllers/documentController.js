@@ -176,3 +176,23 @@ exports.getDocumentById = async (req, res) => {
     res.send("kamu belum memiliki akun");
   }
 };
+
+exports.deleteDocument = async (req, res) => {
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
+  if (decoded.level === "admin") {
+    const query = `DELETE FROM dokumen WHERE id_dokumen = '${req.params.id_dokumen}'`;
+    pool.query(query, function (err, result) {
+      if (err) {
+        res.send("error");
+        throw err;
+      }
+      console.log("berhasil");
+      res.send("berhasil");
+    });
+  } else {
+    res.send("kamu bukan admin");
+  }
+};
