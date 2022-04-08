@@ -65,7 +65,7 @@ exports.getPeminjamanById = async (req, res) => {
     decoded.level === "anggota" ||
     decoded.level === "supervisor"
   ) {
-    const query = `select peminjaman.id_peminjaman, dokumen.judul_dokumen, pengguna.nama, peminjaman.tanggal_peminjaman, peminjaman.konfirmasi from peminjaman inner join dokumen ON dokumen.id_dokumen = peminjaman.id_dokumen inner join pengguna ON pengguna.id_user = peminjaman.id_peminjam where id_peminjam = '${req.params.id_peminjam}'`;
+    const query = `select peminjaman.id_peminjaman, dokumen.judul_dokumen, dokumen.file_dokumen, pengguna.nama, peminjaman.tanggal_peminjaman, peminjaman.konfirmasi from peminjaman inner join dokumen ON dokumen.id_dokumen = peminjaman.id_dokumen inner join pengguna ON pengguna.id_user = peminjaman.id_peminjam where id_peminjam = '${req.params.id_peminjam}'`;
     pool.query(query, function (err, result) {
       if (err) {
         res.send("error");
