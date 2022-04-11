@@ -39,7 +39,7 @@ exports.getLogin = async (req, res) => {
       bcrypt.compare(
         req.body.password,
         result.rows.password,
-        function (err, result) {
+        function (err, response) {
           if (result) {
             const token = jwt.sign(
               JSON.stringify(result.rows[0]),
