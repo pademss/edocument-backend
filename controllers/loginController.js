@@ -35,29 +35,26 @@ exports.getLogin = async (req, res) => {
       res.send("error");
       throw err;
     }
-    if (result.rows[0] !== undefined) {
-      bcrypt.compare(
-        req.body.password,
-        result.rows.password,
-        function (err, response) {
-          if (result) {
-            const token = jwt.sign(
-              JSON.stringify(result.rows[0]),
-              "padempindikajonathan"
-              // { expiresIn: "3M" }
-            );
-            console.log("sukses");
-            res.status(200).send({ pengguna: result.rows[0], token: token });
-          } else {
-            console.log("password salah");
-            res.send("password salah");
-          }
+    const data = result.rows[0];
+    if (data !== undefined) {
+      bcrypt.compare(req.body.password, data.password, function (err, result) {
+        if (result) {
+          const token = jwt.sign(
+            JSON.stringify(data),
+            "padempindikajonathan"
+            // { expiresIn: "3M" }
+          );
+          console.log("sukses");
+          res.status(200).send({ pengguna: data, token: token });
+        } else {
+          console.log("password salah");
+          res.status(403).send("password salah");
         }
-      );
+      });
       // console.log(result.rows);
       // res.status().send(result.rows);
     } else {
-      res.send("kamu belum punya akun");
+      res.status(403).send("kamu belum punya akun");
     }
     // console.log(result.rows[0]);
     // bcrypt.compare(
