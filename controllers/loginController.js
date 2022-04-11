@@ -35,21 +35,46 @@ exports.getLogin = async (req, res) => {
       res.send("error");
       throw err;
     }
-    bcrypt.compare(
-      req.body.password,
-      result.rows.password,
-      function (err, response) {
-        if (result) {
-          const token = jwt.sign(
-            JSON.stringify(result.rows[0]),
-            "padempindikajonathan"
-            // { expiresIn: "3M" }
-          );
-          console.log("sukses");
-          res.status(200).send({ pengguna: result.rows[0], token: token });
+    if (result.rows[0] !== undefined) {
+      bcrypt.compare(
+        req.body.password,
+        result.rows.password,
+        function (err, result) {
+          if (result) {
+            const token = jwt.sign(
+              JSON.stringify(result.rows[0]),
+              "padempindikajonathan"
+              // { expiresIn: "3M" }
+            );
+            console.log("sukses");
+            res.status(200).send({ pengguna: result.rows[0], token: token });
+          } else {
+            console.log("password salah");
+            res.send("password salah");
+          }
         }
-      }
-    );
+      );
+      // console.log(result.rows);
+      // res.status().send(result.rows);
+    } else {
+      res.send("kamu belum punya akun");
+    }
+    // console.log(result.rows[0]);
+    // bcrypt.compare(
+    //   req.body.password,
+    //   result.rows.password,
+    //   function (err, response) {
+    //     if (result) {
+    //       const token = jwt.sign(
+    //         JSON.stringify(result.rows[0]),
+    //         "padempindikajonathan"
+    //         // { expiresIn: "3M" }
+    //       );
+    //       console.log("sukses");
+    //       res.status(200).send({ pengguna: result.rows[0], token: token });
+    //     }
+    //   }
+    // );
     //     console.log(result.rows);
     //     res.status().send(result.rows);
   });
