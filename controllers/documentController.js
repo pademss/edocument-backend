@@ -99,7 +99,7 @@ exports.addDocument = async (req, res) => {
         //     req.body.pic
         // );
         // res.send("sukses upload");
-        const query = `INSERT INTO dokumen(judul_dokumen, id_pic, file_dokumen, kategori_dokumen) values ('${req.file.originalname}', '${req.body.id_pic}', '${req.file.location}', '${req.body.kategori_dokumen}')`;
+        const query = `INSERT INTO dokumen(judul_dokumen, id_pic, file_dokumen, kategori_dokumen, nama_pic) values ('${req.file.originalname}', '${req.body.id_pic}', '${req.file.location}', '${req.body.kategori_dokumen}', '${req.body.nama_pic}')`;
         pool.query(query, function (err, result) {
           if (err) {
             res.send("error");

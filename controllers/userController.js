@@ -48,3 +48,28 @@ exports.getAllUser = async (req, res) => {
     res.send("kamu bukan admin");
   }
 };
+
+exports.getAllSupervisor = async (req, res) => {
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
+  console.log(decoded);
+  if (
+    decoded.level === "admin" ||
+    decoded.level === "supervisor" ||
+    decoded.level === "anggota"
+  ) {
+    const query = "select * from pengguna where level = 'supervisor'";
+    pool.query(query, function (err, result) {
+      if (err) {
+        res.send("error");
+        throw err;
+      }
+      console.log(result.rows);
+      res.send(result.rows);
+    });
+  } else {
+    res.send("kamu bukan admin");
+  }
+};
