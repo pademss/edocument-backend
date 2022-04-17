@@ -73,3 +73,23 @@ exports.getAllSupervisor = async (req, res) => {
     res.send("kamu bukan admin");
   }
 };
+
+exports.deleteUser = async (req, res) => {
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
+  if (decoded.level === "admin") {
+    const query = `DELETE FROM pengguna WHERE id_user = '${req.params.id_user}'`;
+    pool.query(query, function (err, result) {
+      if (err) {
+        res.send("error");
+        throw err;
+      }
+      console.log("berhasil");
+      res.send("berhasil");
+    });
+  } else {
+    res.send("kamu bukan admin");
+  }
+};

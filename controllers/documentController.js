@@ -196,3 +196,84 @@ exports.deleteDocument = async (req, res) => {
     res.send("kamu bukan admin");
   }
 };
+
+exports.updateDocument = async (req, res) => {
+  var decoded = jwt.verify(
+    req.headers.authorization.substring(7),
+    "padempindikajonathan"
+  );
+  if (decoded.level === "admin") {
+    const uploadSingle = upload.single("file");
+
+    uploadSingle(req, res, (err) => {
+      if (err) {
+        res.send("error");
+        throw err;
+      } else {
+        if (`${req.file.location}` === undefined) {
+          const query = `UPDATE dokumen set judul_dokumen = '${req.body.judul_dokumen}', id_pic = '${req.body.id_pic}', kategori_dokumen = '${req.body.kategori_dokumen}', nama_pic = '${req.body.nama_pic}' WHERE id_dokumen = ${req.params.id_dokumen}`;
+          pool.query(query, function (err, result) {
+            if (err) {
+              res.send("error");
+              throw err;
+            }
+            console.log("berhasil");
+            res.send("berhasil");
+          });
+        } else {
+          const query = `UPDATE dokumen set judul_dokumen = '${req.body.judul_dokumen}', id_pic = '${req.body.id_pic}', kategori_dokumen = '${req.body.kategori_dokumen}', nama_pic = '${req.body.nama_pic}', file_dokumen = '${req.body.file_dokumen}' WHERE id_dokumen = ${req.params.id_dokumen}`;
+          pool.query(query, function (err, result) {
+            if (err) {
+              res.send("error");
+              throw err;
+            }
+            console.log("berhasil");
+            res.send("berhasil");
+          });
+        }
+        // pool.query(query, function (err, result) {
+        //   if (err) {
+        //     res.send("error");
+        //     throw err;
+        //   }
+        //   console.log("berhasil");
+        //   res.send("berhasil");
+        // });
+      }
+    });
+  } else {
+    res.send("kamu bukan admin");
+  }
+};
+//   var decoded = jwt.verify(
+//     req.headers.authorization.substring(7),
+//     "padempindikajonathan"
+//   );
+//   if (decoded.level === "admin") {
+//     const uploadSingle = upload.single("file");
+
+//     uploadSingle(req, res, (err) => {
+//       if (err) {
+//         res.send("error");
+//         throw err;
+//       } else {
+//         if(`${req.body.file}` === undefined){
+//           const query = `UPDATE dokumen set judul_dokumen = '${req.body.judul_dokumen}', id_pic = '${req.body.id_pic}', kategori_dokumen = '${req.body.kategori_dokumen}', nama_pic = '${req.body.nama_pic}' WHERE id_dokumen ${req.params.id_dokumen}`;
+//         }
+//         else{
+//           const query = `UPDATE dokumen set judul_dokumen = '${req.body.judul_dokumen}', id_pic = '${req.body.id_pic}', kategori_dokumen = '${req.body.kategori_dokumen}', nama_pic = '${req.body.nama_pic}', file_dokumen = '${req.body.file_dokumen}' WHERE id_dokumen ${req.params.id_dokumen}`;
+//         }
+//   pool.query(query, function (err, result) {
+//     if (err) {
+//       res.send("error");
+//       throw err;
+//     }
+//     console.log("berhasil");
+//     res.send("berhasil");
+//   });
+// };
+
+// }) else {
+//   res.send("kamu bukan admin");
+// }}
+// };

@@ -6,7 +6,8 @@ router.route("/upload").post(controller.uploadDocument);
 router
   .route("/:id_dokumen")
   .get(controller.getDocumentById)
-  .delete(controller.deleteDocument);
+  .delete(controller.deleteDocument)
+  .put(controller.updateDocument);
 
 // router.route("/:id").delete(controller.deleteBook).put(controller.updateBook);
 
