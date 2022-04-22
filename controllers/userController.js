@@ -80,7 +80,7 @@ exports.deleteUser = async (req, res) => {
     "padempindikajonathan"
   );
   if (decoded.level === "admin") {
-    const query = `DELETE FROM pengguna WHERE id_user = '${req.params.id_user}'`;
+    const query = `DELETE FROM pengguna WHERE id_user = ${req.params.id_user}`;
     pool.query(query, function (err, result) {
       if (err) {
         res.send("error");

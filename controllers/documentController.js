@@ -8,6 +8,7 @@ var jwt = require("jsonwebtoken");
 const AWS = require("aws-sdk");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
+const uuid = require("uuid");
 // const KEY_ID = "AKIAROTUI7GT5GP22GPI";
 // const SECRET_KEY = "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";
 
@@ -40,12 +41,15 @@ const upload = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-      cb(null, file.originalname);
+      cb(null, file.originalname + uuid.v4());
     },
     acl: "public-read",
     contentDisposition: "inline",
     contentType: multerS3.AUTO_CONTENT_TYPE,
   }),
+  limits: {
+    fileSize: 2000000,
+  },
 });
 
 exports.uploadDocument = async (req, res) => {
@@ -86,8 +90,9 @@ exports.addDocument = async (req, res) => {
 
     uploadSingle(req, res, (err) => {
       if (err) {
-        res.send("error");
-        throw err;
+        console.log(err.message);
+        res.status(400).send(err.message);
+        // throw err;
       } else {
         // console.log(req.file);
         // console.log(
@@ -207,10 +212,12 @@ exports.updateDocument = async (req, res) => {
 
     uploadSingle(req, res, (err) => {
       if (err) {
-        res.send("error");
-        throw err;
+        console.log(err.message);
+        res.status(400).send(err.message);
+        // throw err;
       } else {
-        if (`${req.file.location}` === undefined) {
+        console.log(req.body, req.file);
+        if (req.file === undefined) {
           const query = `UPDATE dokumen set judul_dokumen = '${req.body.judul_dokumen}', id_pic = '${req.body.id_pic}', kategori_dokumen = '${req.body.kategori_dokumen}', nama_pic = '${req.body.nama_pic}' WHERE id_dokumen = ${req.params.id_dokumen}`;
           pool.query(query, function (err, result) {
             if (err) {
@@ -221,7 +228,7 @@ exports.updateDocument = async (req, res) => {
             res.send("berhasil");
           });
         } else {
-          const query = `UPDATE dokumen set judul_dokumen = '${req.body.judul_dokumen}', id_pic = '${req.body.id_pic}', kategori_dokumen = '${req.body.kategori_dokumen}', nama_pic = '${req.body.nama_pic}', file_dokumen = '${req.body.file_dokumen}' WHERE id_dokumen = ${req.params.id_dokumen}`;
+          const query = `UPDATE dokumen set judul_dokumen = '${req.body.judul_dokumen}', id_pic = '${req.body.id_pic}', kategori_dokumen = '${req.body.kategori_dokumen}', nama_pic = '${req.body.nama_pic}', file_dokumen = '${req.file.location}' WHERE id_dokumen = ${req.params.id_dokumen}`;
           pool.query(query, function (err, result) {
             if (err) {
               res.send("error");
