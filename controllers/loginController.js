@@ -9,24 +9,6 @@ const saltRounds = 10;
 var moment = require("moment");
 var jwt = require("jsonwebtoken");
 
-exports.addLogin = async (req, res) => {
-  console.log(moment().add(6, "M").toISOString());
-  const query = `INSERT INTO token(email, password, token, expires, type) values ('${
-    req.body.email
-  }', '${req.body.password}', '${req.body.token}', '${moment()
-    .add(6, "m")
-    .toISOString()}', '${req.body.type_token}')`;
-  console.log(req.body);
-  pool.query(query, function (err, result) {
-    if (err) {
-      res.send("error");
-      throw err;
-    }
-    console.log("berhasil");
-    res.send("berhasil");
-  });
-};
-
 exports.getLogin = async (req, res) => {
   const query = `select * from pengguna where email = '${req.body.email}'`;
 
@@ -51,28 +33,8 @@ exports.getLogin = async (req, res) => {
           res.status(403).send("password salah");
         }
       });
-      // console.log(result.rows);
-      // res.status().send(result.rows);
     } else {
       res.status(403).send("kamu belum punya akun");
     }
-    // console.log(result.rows[0]);
-    // bcrypt.compare(
-    //   req.body.password,
-    //   result.rows.password,
-    //   function (err, response) {
-    //     if (result) {
-    //       const token = jwt.sign(
-    //         JSON.stringify(result.rows[0]),
-    //         "padempindikajonathan"
-    //         // { expiresIn: "3M" }
-    //       );
-    //       console.log("sukses");
-    //       res.status(200).send({ pengguna: result.rows[0], token: token });
-    //     }
-    //   }
-    // );
-    //     console.log(result.rows);
-    //     res.status().send(result.rows);
   });
 };

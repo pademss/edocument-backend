@@ -9,6 +9,4 @@ router
   .delete(controller.deleteDocument)
   .put(controller.updateDocument);
 
-// router.route("/:id").delete(controller.deleteBook).put(controller.updateBook);
-
 module.exports = router;
